@@ -1,0 +1,6 @@
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\bin\Debug\Supermarket.exe.config
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\bin\Debug\Supermarket.exe
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\bin\Debug\Supermarket.pdb
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\obj\Debug\Supermarket.csprojResolveAssemblyReference.cache
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\obj\Debug\Supermarket.exe
+C:\Users\v.petrusenko\WorkingFolder\TrainingTasks\Supermarket\Supermarket\obj\Debug\Supermarket.pdb
