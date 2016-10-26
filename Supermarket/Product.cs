@@ -12,7 +12,7 @@ namespace Supermarket
      * 1.Apiece products have a set price for 1 unit;
      * 2.ByWeight products habe a set price for 1 kilogram of that product;
     */
-    public abstract class Product
+    public abstract class Product: ICustomProduct
     {
         public string Name { get; private set; }
         public int Price { get; private set; }
@@ -21,6 +21,9 @@ namespace Supermarket
             Name = name;
             Price = price;
         }
+
+        abstract public double PriceTotal(double amount);
+        abstract public void PrintMessage(string name, double price, double cost);        
     }
 
     public class Apiece : Product
@@ -29,7 +32,17 @@ namespace Supermarket
         {
 
         }
-        
+
+        public override double PriceTotal(double amount)
+        {
+            return this.Price * amount;
+        }
+
+        public override void PrintMessage(string name, double price, double cost)
+        {
+            Console.WriteLine(name + "\tx" + price + "\t= " + cost);
+        }
+
         /* 
          * specific data about products which sell apiece
         */
@@ -41,7 +54,15 @@ namespace Supermarket
         {
 
         }
+        public override double PriceTotal(double amount)
+        {
+            return this.Price * amount;
+        }
 
+        public override void PrintMessage(string name, double price, double cost)
+        {
+            Console.WriteLine(name + "\t" + price + "kg " + "\t= " + cost); 
+        }
         /* 
          * specific data about products which sell by weight
         */

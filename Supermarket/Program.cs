@@ -20,7 +20,7 @@ namespace Supermarket
             billa.AddToCart("РыБа", 0.8);
             billa.AddToCart("Ноутбук", 2);
 
-            billa.PriceCalculator();
+            billa.CostCalculator();
 
             Console.ReadLine();
 
