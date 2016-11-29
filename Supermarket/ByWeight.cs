@@ -8,14 +8,10 @@ namespace Supermarket
         {
 
         }
-        public override double PriceTotal(double amount, double discount)
+        
+        public override void PrintMessage(Product prod, double cost)
         {
-            return Price * amount * (1 - discount * 0.01);
-        }
-
-        public override void PrintMessage(string name, double price, double cost)
-        {
-            Console.WriteLine(name + "\t" + price + "kg " + "\t= " + cost); 
+            Console.WriteLine(prod.Name + "\t" + prod.Price + "kg " + "\t= " + cost); 
         }
         /* 
          * specific data about products which sell by weight

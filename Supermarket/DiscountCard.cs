@@ -2,8 +2,8 @@
 {
     class DiscountCard
     {
-        public bool Valid { get; set; }
-        public double Discount { get; set; }
+        public bool Valid { get; private set; }
+        public double Discount { get; private set; }
 
         public DiscountCard(double discount, bool valid = true)
         {

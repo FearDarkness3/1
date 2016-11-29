@@ -3,20 +3,21 @@ using System.Collections.Generic;
 
 namespace Supermarket
 {
-    class Supermarket : ISupermarket, ICustomList
+    class Supermarket : ISupermarket
     {
-        public readonly List<Product> ListOfProducts = new List<Product>();
-        public Cart Cart;
-        private readonly List<string> _proposition = new List<string>();
+        public List<Product> ListOfProducts { get; set; }
+        //public readonly List<Product> ListOfProducts = new List<Product>();
+        private readonly List<string> _discountProductList = new List<string>();
 
         private readonly List<Apiece> _apieceList = new List<Apiece>();
         private readonly List<ByWeight> _byWeightList = new List<ByWeight>();
 
-
+        public Cart Cart;
         public Supermarket()
         {
             Cart = new Cart();
-            
+            ListOfProducts = new List<Product>();
+
             CreateSupermarketProductsList();
             CreateProposition();
 
@@ -38,9 +39,14 @@ namespace Supermarket
             _byWeightList.Add(new ByWeight("Колбаса", 58, "general"));
             _byWeightList.Add(new ByWeight("Рыба", 64, "general"));
         }
+
+        public Cart GetCart()
+        {
+            return Cart;
+        }
         private void CreateProposition()
         {
-            _proposition.Add("general");
+            _discountProductList.Add("general");
             //Proposition.Add("alchohol");
         }
         /// <summary>
@@ -48,22 +54,31 @@ namespace Supermarket
         /// </summary>
         /// <param name="prod">item is the item we are going to check</param>
         /// <returns></returns>
-        public bool ListContains(Product prod)
+        private bool ListContains(Product prod)
         {
             return ListOfProducts.Contains(prod);
         }
-        public void AddToList(Product prod)
+        private void AddToList(Product prod)
         {
-            ListOfProducts.Add(prod);
+            if (!ListOfProducts.Contains(prod))
+            {
+                ListOfProducts.Add(prod);
+            }
         }
-        public void RemoveFromList(Product prod)
+        private void RemoveFromList(Product prod)
         {
-            ListOfProducts.Remove(prod);
+            if (ListOfProducts.Contains(prod))
+            {
+                ListOfProducts.Remove(prod);
+            }
         }
         //Is this a good design? 
         public void AddToCart(Product prod, double amount)
         {
-            Cart.AddProductToCart(prod, amount);
+            if (ListContains(prod))
+            {
+                Cart.AddProductToCart(prod, amount);
+            }
         }
 
         private double GetDiscount(DiscountCard card)
@@ -77,7 +92,7 @@ namespace Supermarket
         }
         private int IsProposed(string category)
         {
-            if (_proposition.Contains(category))
+            if (_discountProductList.Contains(category))
             {
                 return 1;
             }
@@ -90,7 +105,7 @@ namespace Supermarket
         //{
             
         //}
-        public void CostCalculator(Cart cart, DiscountCard card)
+        public void Cashier(Cart cart, DiscountCard card)
         {
             double cost = 0;
             double discount = GetDiscount(card);
@@ -103,7 +118,7 @@ namespace Supermarket
                     var temp = item.Key.PriceTotal(item.Value, thisDiscount);
                     cost += temp;
 
-                    item.Key.PrintMessage(item.Key.Name, item.Value, temp);
+                    item.Key.PrintMessage(item.Key, temp);
                 }
             }
 

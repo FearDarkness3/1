@@ -14,7 +14,11 @@
 
         }
 
-        public abstract double PriceTotal(double amount, double discount);
-        public abstract void PrintMessage(string name, double price, double cost);
+        public abstract void PrintMessage(Product prod, double cost);
+
+        public double PriceTotal(double amount, double discount)
+        {
+            return Price * amount * (1 - discount * 0.01);
+        }
     }
 }
