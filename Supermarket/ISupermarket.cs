@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Supermarket
+﻿namespace Supermarket
 {
     interface ISupermarket
     {        
-        void AddToCart(string name, double amount);
-        void CostCalculator();
+        void AddToCart(Product prod, double amount);
+        void CostCalculator(Cart cart, DiscountCard card);
     }
 }

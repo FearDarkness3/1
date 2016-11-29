@@ -1,82 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supermarket
 {
     class Supermarket : ISupermarket, ICustomList
     {
-        private Dictionary<string, Product> ListOfProducts = new Dictionary<string, Product>();
-        public Dictionary<string, double> cart;
+        public readonly List<Product> ListOfProducts = new List<Product>();
+        public Cart Cart;
+        private readonly List<string> _proposition = new List<string>();
 
-        private List<Apiece> ApieceList = new List<Apiece>();
-        private List<ByWeight> ByWeightList = new List<ByWeight>();
+        private readonly List<Apiece> _apieceList = new List<Apiece>();
+        private readonly List<ByWeight> _byWeightList = new List<ByWeight>();
 
 
         public Supermarket()
         {
-            cart = new Dictionary<string, double>();
-
+            Cart = new Cart();
+            
             CreateSupermarketProductsList();
+            CreateProposition();
 
-            ApieceList.ForEach(x => AddToList(x));
-            ByWeightList.ForEach(x => AddToList(x));
-            //AddToList(new Apiece("Черный чай", 25));
-            //AddToList(new Apiece("Хлеб", 6));
-            //AddToList(new Apiece("Шоколадка", 33));
-            //AddToList(new Apiece("Чипсы", 12));
-            //AddToList(new Apiece("Кетчуп", 16));
-            //AddToList(new ByWeight("Печенье", 45));
-            //AddToList(new ByWeight("Яблоко", 15));
-            //AddToList(new ByWeight("Мясо", 70));
-            //AddToList(new ByWeight("Колбаса", 58));
-            //AddToList(new ByWeight("Рыба", 64));
+            _apieceList.ForEach(AddToList);
+            _byWeightList.ForEach(AddToList);
+            
         }
         private void CreateSupermarketProductsList()
         {
-            ApieceList.Add(new Apiece("Черный чай", 25));
-            ApieceList.Add(new Apiece("Хлеб", 6));
-            ApieceList.Add(new Apiece("Шоколадка", 33));
-            ApieceList.Add(new Apiece("Чипсы", 12));
-            ApieceList.Add(new Apiece("Кетчуп", 16));
-            ByWeightList.Add(new ByWeight("Печенье", 45));
-            ByWeightList.Add(new ByWeight("Яблоко", 15));
-            ByWeightList.Add(new ByWeight("Мясо", 70));
-            ByWeightList.Add(new ByWeight("Колбаса", 58));
-            ByWeightList.Add(new ByWeight("Рыба", 64));
+            _apieceList.Add(new Apiece("Черный чай", 25, "general"));
+            _apieceList.Add(new Apiece("Хлеб", 6, "general"));
+            _apieceList.Add(new Apiece("Шоколадка", 33, "general"));
+            _apieceList.Add(new Apiece("Чипсы", 12, "general"));
+            _apieceList.Add(new Apiece("Кетчуп", 16, "general"));
+            _apieceList.Add(new Apiece("Пиво", 10, "alchohol"));
+            _byWeightList.Add(new ByWeight("Печенье", 45, "general"));
+            _byWeightList.Add(new ByWeight("Яблоко", 15, "general"));
+            _byWeightList.Add(new ByWeight("Мясо", 70, "general"));
+            _byWeightList.Add(new ByWeight("Колбаса", 58, "general"));
+            _byWeightList.Add(new ByWeight("Рыба", 64, "general"));
         }
-        public bool ListContains(string item)
+        private void CreateProposition()
         {
-            // This method checks if supermarket has the specific product in its ProductList
-            return ListOfProducts.ContainsKey(item);
+            _proposition.Add("general");
+            //Proposition.Add("alchohol");
+        }
+        /// <summary>
+        /// This method checks if the supermarket has the specific profuct in its list
+        /// </summary>
+        /// <param name="prod">item is the item we are going to check</param>
+        /// <returns></returns>
+        public bool ListContains(Product prod)
+        {
+            return ListOfProducts.Contains(prod);
         }
         public void AddToList(Product prod)
         {
-            ListOfProducts.Add(prod.Name.ToLower(), prod);
+            ListOfProducts.Add(prod);
         }
         public void RemoveFromList(Product prod)
         {
-            ListOfProducts.Remove(prod.Name.ToLower());
+            ListOfProducts.Remove(prod);
         }
-        public void AddToCart(string name, double amount)
+        //Is this a good design? 
+        public void AddToCart(Product prod, double amount)
         {
-            cart.Add(name.ToLower(), amount);
+            Cart.AddProductToCart(prod, amount);
         }
-        public void CostCalculator()
+
+        private double GetDiscount(DiscountCard card)
+        {
+            if (card.Valid)
+            {
+                return card.Discount;
+            }
+
+            return 0;
+        }
+        private int IsProposed(string category)
+        {
+            if (_proposition.Contains(category))
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        // repetition???
+        //public void Cashier(Cart cart, double totalPrice)
+        //{
+            
+        //}
+        public void CostCalculator(Cart cart, DiscountCard card)
         {
             double cost = 0;
-            double temp = 0;
+            double discount = GetDiscount(card);
 
-            foreach (var item in cart)
+            foreach (var item in cart.Products)
             {
                 if (ListContains(item.Key))
                 {
-                    temp = ListOfProducts[item.Key].PriceTotal(item.Value);
+                    double thisDiscount = discount * IsProposed(item.Key.Category);     
+                    var temp = item.Key.PriceTotal(item.Value, thisDiscount);
                     cost += temp;
 
-                    ListOfProducts[item.Key].PrintMessage(item.Key, item.Value, temp);
+                    item.Key.PrintMessage(item.Key.Name, item.Value, temp);
                 }
             }
 
