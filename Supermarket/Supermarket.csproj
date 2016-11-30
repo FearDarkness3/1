@@ -54,7 +54,7 @@
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Supermarket.cs" />
+    <Compile Include="Billa.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

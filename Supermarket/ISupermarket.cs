@@ -3,10 +3,11 @@
 namespace Supermarket
 {
     interface ISupermarket
-    {        
+    {
         void AddToCart(Product prod, double amount);
-        void Cashier(Cart cart, DiscountCard card);
-        List<Product> ListOfProducts { get; set; }
-        Cart GetCart();
+        void CheckOut(DiscountCard card);
+        List<string> ProductNameList { get; }
+        void DisplayProductList();
+        Product GetProduct(string productName);
     }
 }

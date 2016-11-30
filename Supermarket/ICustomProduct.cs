@@ -3,6 +3,6 @@
     interface ICustomProduct
     {
         double PriceTotal(double amount, double discount);
-        void PrintMessage(Product product, double cost);
+        void PrintMessage(double amount, double cost);
     }
 }

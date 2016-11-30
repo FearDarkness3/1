@@ -9,9 +9,9 @@ namespace Supermarket
 
         }
         
-        public override void PrintMessage(Product prod, double cost)
+        public override void PrintMessage(double amount, double cost)
         {
-            Console.WriteLine(prod.Name + "\t" + prod.Price + "kg " + "\t= " + cost); 
+            Console.WriteLine(Name + "\t\t" + amount + "kg " + "\t= " + cost); 
         }
         /* 
          * specific data about products which sell by weight

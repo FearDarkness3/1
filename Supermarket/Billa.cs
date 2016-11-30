@@ -1,50 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Supermarket
 {
-    class Supermarket : ISupermarket
+    class Billa : ISupermarket
     {
-        public List<Product> ListOfProducts { get; set; }
-        //public readonly List<Product> ListOfProducts = new List<Product>();
+        public List<Product> ListOfProducts { get; private set; }
         private readonly List<string> _discountProductList = new List<string>();
+        public List<string> ProductNameList { get; private set; }
 
         private readonly List<Apiece> _apieceList = new List<Apiece>();
         private readonly List<ByWeight> _byWeightList = new List<ByWeight>();
-
+        
         public Cart Cart;
-        public Supermarket()
+        public Billa()
         {
             Cart = new Cart();
             ListOfProducts = new List<Product>();
 
             CreateSupermarketProductsList();
-            CreateProposition();
+            CreateDiscountProposition();
 
             _apieceList.ForEach(AddToList);
             _byWeightList.ForEach(AddToList);
-            
+
+            CreateProductNameList();
         }
         private void CreateSupermarketProductsList()
         {
-            _apieceList.Add(new Apiece("Черный чай", 25, "general"));
-            _apieceList.Add(new Apiece("Хлеб", 6, "general"));
-            _apieceList.Add(new Apiece("Шоколадка", 33, "general"));
-            _apieceList.Add(new Apiece("Чипсы", 12, "general"));
-            _apieceList.Add(new Apiece("Кетчуп", 16, "general"));
-            _apieceList.Add(new Apiece("Пиво", 10, "alchohol"));
-            _byWeightList.Add(new ByWeight("Печенье", 45, "general"));
-            _byWeightList.Add(new ByWeight("Яблоко", 15, "general"));
-            _byWeightList.Add(new ByWeight("Мясо", 70, "general"));
-            _byWeightList.Add(new ByWeight("Колбаса", 58, "general"));
-            _byWeightList.Add(new ByWeight("Рыба", 64, "general"));
+            _apieceList.Add(new Apiece("Black tea", 25, "general"));
+            _apieceList.Add(new Apiece("Bread", 6, "general"));
+            _apieceList.Add(new Apiece("Chocolate", 33, "general"));
+            _apieceList.Add(new Apiece("Chips", 12, "general"));
+            _apieceList.Add(new Apiece("Ketchup", 16, "general"));
+            _apieceList.Add(new Apiece("Beer", 10, "alchohol"));
+            _byWeightList.Add(new ByWeight("Cookies", 45, "general"));
+            _byWeightList.Add(new ByWeight("Apple", 15, "general"));
+            _byWeightList.Add(new ByWeight("Meat", 70, "general"));
+            _byWeightList.Add(new ByWeight("Sausage", 58, "general"));
+            _byWeightList.Add(new ByWeight("Fish", 64, "general"));
         }
 
-        public Cart GetCart()
-        {
-            return Cart;
-        }
-        private void CreateProposition()
+        
+        private void CreateDiscountProposition()
         {
             _discountProductList.Add("general");
             //Proposition.Add("alchohol");
@@ -57,6 +56,30 @@ namespace Supermarket
         private bool ListContains(Product prod)
         {
             return ListOfProducts.Contains(prod);
+        }
+        
+
+        private void CreateProductNameList()
+        {
+            ProductNameList = new List<string>();
+
+            foreach (var product in ListOfProducts)
+            {
+                ProductNameList.Add(product.Name);
+            }
+        }
+
+        
+        public Product GetProduct(string productName)
+        {
+            return ListOfProducts.Find(x => x.Name.ToLower() == productName.ToLower());
+        }
+        
+        public void DisplayProductList()
+        {
+            Console.WriteLine("Products we have in store:\n");
+            ProductNameList.ForEach(Console.WriteLine);
+            Console.WriteLine();
         }
         private void AddToList(Product prod)
         {
@@ -72,7 +95,7 @@ namespace Supermarket
                 ListOfProducts.Remove(prod);
             }
         }
-        //Is this a good design? 
+     
         public void AddToCart(Product prod, double amount)
         {
             if (ListContains(prod))
@@ -99,18 +122,13 @@ namespace Supermarket
 
             return 0;
         }
-
-        // repetition???
-        //public void Cashier(Cart cart, double totalPrice)
-        //{
-            
-        //}
-        public void Cashier(Cart cart, DiscountCard card)
+        
+        public void CheckOut(DiscountCard card)
         {
             double cost = 0;
             double discount = GetDiscount(card);
 
-            foreach (var item in cart.Products)
+            foreach (var item in Cart.Products)
             {
                 if (ListContains(item.Key))
                 {
@@ -118,11 +136,11 @@ namespace Supermarket
                     var temp = item.Key.PriceTotal(item.Value, thisDiscount);
                     cost += temp;
 
-                    item.Key.PrintMessage(item.Key, temp);
+                    item.Key.PrintMessage(item.Value, temp);
                 }
             }
 
-            Console.WriteLine("\nСумма = " + cost);
+            Console.WriteLine("\nTotal Price = " + cost);
         }
     }
 }

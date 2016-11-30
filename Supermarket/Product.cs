@@ -14,7 +14,7 @@
 
         }
 
-        public abstract void PrintMessage(Product prod, double cost);
+        public abstract void PrintMessage(double amount, double cost);
 
         public double PriceTotal(double amount, double discount)
         {

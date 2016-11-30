@@ -9,9 +9,9 @@ namespace Supermarket
 
         }
         
-        public override void PrintMessage(Product prod, double cost)
+        public override void PrintMessage(double amount, double cost)
         {
-            Console.WriteLine(prod.Name + "\tx" + prod.Price + "\t= " + cost);
+            Console.WriteLine(Name + "\t\tx" + amount + "\t= " + cost);
         }
 
         /* 
