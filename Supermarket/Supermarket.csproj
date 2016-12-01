@@ -46,15 +46,16 @@
     <Compile Include="Apiece.cs" />
     <Compile Include="ByWeight.cs" />
     <Compile Include="Cart.cs" />
+    <Compile Include="CartItem.cs" />
     <Compile Include="DiscountCard.cs" />
     <Compile Include="GoldenCard.cs" />
     <Compile Include="ICustomProduct.cs" />
-    <Compile Include="ICustomList.cs" />
     <Compile Include="ISupermarket.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Billa.cs" />
+    <Compile Include="Warehouse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

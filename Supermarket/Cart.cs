@@ -8,22 +8,44 @@ namespace Supermarket
 {
     class Cart
     {
-        public Dictionary<Product, double> Products { get; set; }
+        public List<CartItem> Products { get; set; }
 
         public Cart()
         {
-            Products = new Dictionary<Product, double>();
+            Products = new List<CartItem>();
         }
         public void AddProductToCart(Product prod, double amount)
         {
-            Products.Add(prod, amount);
+            if (prod is ByWeight)
+            {
+                Products.Add(new CartItem(prod, amount));
+            }
+            else
+            {
+                try
+                {
+                    if (amount % 1 == 0)
+                    {
+                        Products.Add(new CartItem(prod, amount));
+                    }
+                    else
+                    {
+                        throw new ArgumentException("amount argument should be integer for products of Apiece type");
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Wrong input! Please, use integer value for input.");
+                }
+            }
+            
         }
 
-        public void RemoveProductFromCart(Product prod)
+        public void RemoveProductFromCart(CartItem cartItem)
         {
-            if (Products.ContainsKey(prod))
+            if (Products.Contains(cartItem))
             {
-                Products.Remove(prod);
+                Products.Remove(cartItem);
             }
         }
     }
