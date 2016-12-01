@@ -12,7 +12,7 @@ namespace Supermarket
 
         private readonly List<Apiece> _apieceList = new List<Apiece>();
         private readonly List<ByWeight> _byWeightList = new List<ByWeight>();
-        
+
         public Cart Cart;
         public Billa()
         {
@@ -42,7 +42,7 @@ namespace Supermarket
             _byWeightList.Add(new ByWeight("Fish", 64, "general"));
         }
 
-        
+
         private void CreateDiscountProposition()
         {
             _discountProductList.Add("general");
@@ -57,24 +57,21 @@ namespace Supermarket
         {
             return ListOfProducts.Contains(prod);
         }
-        
+
 
         private void CreateProductNameList()
         {
             ProductNameList = new List<string>();
 
-            foreach (var product in ListOfProducts)
-            {
-                ProductNameList.Add(product.Name);
-            }
+            ListOfProducts.ForEach(x => ProductNameList.Add(x.Name));
         }
 
-        
+
         public Product GetProduct(string productName)
         {
             return ListOfProducts.Find(x => x.Name.ToLower() == productName.ToLower());
         }
-        
+
         public void DisplayProductList()
         {
             Console.WriteLine("Products we have in store:\n");
@@ -95,7 +92,7 @@ namespace Supermarket
                 ListOfProducts.Remove(prod);
             }
         }
-     
+
         public void AddToCart(Product prod, double amount)
         {
             if (ListContains(prod))
@@ -122,7 +119,7 @@ namespace Supermarket
 
             return 0;
         }
-        
+
         public void CheckOut(DiscountCard card)
         {
             double cost = 0;
@@ -130,17 +127,21 @@ namespace Supermarket
 
             foreach (var item in Cart.Products)
             {
-                if (ListContains(item.Key))
-                {
-                    double thisDiscount = discount * IsProposed(item.Key.Category);     
-                    var temp = item.Key.PriceTotal(item.Value, thisDiscount);
-                    cost += temp;
+                double currentItemCost = CalculateCostOfCartItem(item.Key, item.Value, discount);
+                cost += currentItemCost;
 
-                    item.Key.PrintMessage(item.Value, temp);
-                }
+                item.Key.PrintMessage(item.Value, currentItemCost);
             }
 
             Console.WriteLine("\nTotal Price = " + cost);
+        }
+
+        private double CalculateCostOfCartItem(Product prod, double amount, double discount)
+        {
+            double thisDiscount = discount * IsProposed(prod.Category);
+            double totalCost = prod.PriceTotal(amount, thisDiscount);
+
+            return totalCost;
         }
     }
 }
