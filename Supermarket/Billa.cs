@@ -127,7 +127,7 @@ namespace Supermarket
 
             foreach (var item in Cart.Products)
             {
-                double currentItemCost = CalculateCostOfCartItem(item.Key, item.Value, discount);
+                double currentItemCost = CalculateCostOfCartItem(item, discount);
                 cost += currentItemCost;
 
                 item.Key.PrintMessage(item.Value, currentItemCost);
@@ -136,10 +136,13 @@ namespace Supermarket
             Console.WriteLine("\nTotal Price = " + cost);
         }
 
-        private double CalculateCostOfCartItem(Product prod, double amount, double discount)
+        private double CalculateCostOfCartItem(KeyValuePair<Product, double> item, double discount)
         {
-            double thisDiscount = discount * IsProposed(prod.Category);
-            double totalCost = prod.PriceTotal(amount, thisDiscount);
+            Product currentProduct = item.Key;
+            double amount = item.Value;
+
+            double thisDiscount = discount * IsProposed(currentProduct.Category);
+            double totalCost = currentProduct.PriceTotal(amount, thisDiscount);
 
             return totalCost;
         }
