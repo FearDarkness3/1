@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Supermarket
 {
-    class Warehouse
+    class Warehouse : IRepository
     {
         private readonly List<ApieceProduct> _apieceList = new List<ApieceProduct>();
         private readonly List<ByWeightProduct> _byWeightList = new List<ByWeightProduct>();
-        public List<Product> Products = new List<Product>();
+        private List<Product> Products { get; } = new List<Product>();
+
         public Warehouse()
         {
             CreateProductsList();
@@ -33,6 +34,22 @@ namespace Supermarket
             _byWeightList.Add(new ByWeightProduct("Sausage", 58, "general"));
             _byWeightList.Add(new ByWeightProduct("Fish", 64, "general"));
         }
+
+        public List<Product> GetAllProducts()
+        {
+            return Products;
+        }
+        public Product GetProduct(string productName)
+        {
+            return Products.Find(x => x.Name.ToLower() == productName.ToLower());
+        }
+        public void DisplayProductList()
+        {
+            Console.WriteLine("Products we have in store:\n");
+            Products.ForEach(p => Console.WriteLine(p.Name));
+            Console.WriteLine();
+        }
+
         private void AddToList(Product prod)
         {
             if (!Products.Contains(prod))

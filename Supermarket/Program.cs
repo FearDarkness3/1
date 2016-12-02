@@ -6,7 +6,8 @@ namespace Supermarket
     {
         static void Main(string[] args)
         {
-            ISupermarket billa = new Billa();
+            IRepository wh = new Warehouse();
+            ISupermarket billa = new Billa(wh);
             DiscountCard goldenCard = new GoldenCard();
 
             billa.DisplayProductList();

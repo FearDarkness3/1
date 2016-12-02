@@ -52,6 +52,7 @@
     <Compile Include="DiscountCard.cs" />
     <Compile Include="GoldenCard.cs" />
     <Compile Include="ICustomProduct.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="ISupermarket.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
