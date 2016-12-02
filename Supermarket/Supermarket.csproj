@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apiece.cs" />
-    <Compile Include="ByWeight.cs" />
+    <Compile Include="ApieceProduct.cs" />
+    <Compile Include="ApieceCartItem.cs" />
+    <Compile Include="ByWeightProduct.cs" />
+    <Compile Include="ByWeightCartItem.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CartItem.cs" />
     <Compile Include="DiscountCard.cs" />

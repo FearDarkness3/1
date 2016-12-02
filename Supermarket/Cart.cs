@@ -14,31 +14,14 @@ namespace Supermarket
         {
             Products = new List<CartItem>();
         }
-        public void AddProductToCart(Product prod, double amount)
+        public void AddApieceProductToCart(ApieceProduct prod, int amount)
         {
-            if (prod is ByWeight)
-            {
-                Products.Add(new CartItem(prod, amount));
-            }
-            else
-            {
-                try
-                {
-                    if (amount % 1 == 0)
-                    {
-                        Products.Add(new CartItem(prod, amount));
-                    }
-                    else
-                    {
-                        throw new ArgumentException("amount argument should be integer for products of Apiece type");
-                    }
-                }
-                catch (ArgumentException)
-                {
-                    Console.WriteLine("Wrong input! Please, use integer value for input.");
-                }
-            }
-            
+            Products.Add(new ApieceCartItem(prod, amount));
+        }
+
+        public void AddByWeightProductToCart(ByWeightProduct prod, double amount)
+        {
+            Products.Add(new ByWeightCartItem(prod, amount));
         }
 
         public void RemoveProductFromCart(CartItem cartItem)

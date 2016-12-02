@@ -14,8 +14,6 @@
 
         }
 
-        public abstract void PrintMessage(double amount, double cost);
-
         public double PriceTotal(double amount, double discount)
         {
             return Price * amount * (1 - discount * 0.01);

@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Supermarket
 {
-    class CartItem
+    abstract class CartItem
     {
         public Product Product { get; protected set; }
-        public Double Amount { get; set; }
 
-        public CartItem(Product prod, double amount)
-        {
-            Product = prod;
-            Amount = amount;
-        }
+        public abstract double GetAmount();
+        
+        public abstract void PrintMessage(double amount, double cost);
     }
 }

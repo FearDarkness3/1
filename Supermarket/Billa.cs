@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Supermarket
@@ -50,7 +51,8 @@ namespace Supermarket
         public void DisplayProductList()
         {
             Console.WriteLine("Products we have in store:\n");
-            Products.ForEach(p => Console.WriteLine(p.Name));
+            Products
+                .ForEach(p => Console.WriteLine(p.Name));
             Console.WriteLine();
         }
         public void AddToCart(string productName, double amount)
@@ -59,7 +61,24 @@ namespace Supermarket
 
             if (prod != null)
             {
-                Cart.AddProductToCart(prod, amount);
+                try 
+                {
+                    if (prod is ByWeightProduct)
+                    {
+                        var convertedProd = (ByWeightProduct) prod;
+                        Cart.AddByWeightProductToCart(convertedProd, amount);
+                    }
+                    else if (prod is ApieceProduct && amount % 1 == 0)
+                    {
+                        var convertedProd = (ApieceProduct) prod;
+                        int intAmount = (int) amount;
+                        Cart.AddApieceProductToCart(convertedProd, intAmount);
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("The amount for ApieceProduct product should be int");
+                }
             }
         }
 
@@ -92,16 +111,22 @@ namespace Supermarket
                 double currentItemCost = CalculateCostOfCartItem(item, discount);
                 cost += currentItemCost;
 
-                item.Product.PrintMessage(item.Amount, currentItemCost);
+                CheckMessage(item, currentItemCost);
             }
 
             Console.WriteLine("\nTotal Price = " + cost);
         }
 
+        private void CheckMessage(CartItem item, double cost)
+        {
+            double amount = item.GetAmount();
+            item.PrintMessage(amount, cost);
+        }
+
         private double CalculateCostOfCartItem(CartItem item, double discount)
         {
             Product currentProduct = item.Product;
-            double amount = item.Amount;
+            double amount = item.GetAmount();
 
             double thisDiscount = discount * IsProposed(currentProduct.Category);
             double totalCost = currentProduct.PriceTotal(amount, thisDiscount);

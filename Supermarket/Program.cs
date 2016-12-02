@@ -10,7 +10,7 @@ namespace Supermarket
             DiscountCard goldenCard = new GoldenCard();
 
             billa.DisplayProductList();
-            billa.AddToCart("Bread", 1.5);
+            billa.AddToCart("Bread", 1);
             billa.AddToCart("meat", 2.2);
             billa.AddToCart("beer", 1);
             billa.AddToCart("chocolate", 1);
